@@ -11,7 +11,6 @@
   },
   "main": "./dist/vertical.js",
   "scripts": {
-    "install": "babel ./dist/vertical.js -o ./dist/vertical.js",
     "deploy": "rimraf gh-pages/closure-library/scripts/ci/CloseAdobeDialog.exe && gh-pages -t -d gh-pages -m \"Build for $(git log --pretty=format:%H -n1)\"",
     "prepublish": "python build.py && webpack",
     "test:setup": "tests/scripts/test_setup.sh",
