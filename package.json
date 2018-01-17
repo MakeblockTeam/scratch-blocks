@@ -11,6 +11,7 @@
   },
   "main": "./dist/vertical.js",
   "scripts": {
+    "install": "babel ./dist/vertical.js -o ./dist/vertical.js",
     "deploy": "rimraf gh-pages/closure-library/scripts/ci/CloseAdobeDialog.exe && gh-pages -t -d gh-pages -m \"Build for $(git log --pretty=format:%H -n1)\"",
     "prepublish": "python build.py && webpack",
     "test:setup": "tests/scripts/test_setup.sh",
@@ -20,6 +21,10 @@
     "version": "json -f package.json -I -e \"this.repository.sha = '$(git log -n1 --pretty=format:%H)'\""
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "babelify": "^8.0.0",
     "copy-webpack-plugin": "4.0.1",
     "eslint": "2.9.0",
     "exports-loader": "0.6.3",
