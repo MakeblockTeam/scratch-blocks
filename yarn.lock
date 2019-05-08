@@ -3545,9 +3545,9 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
-scratch-l10n@^3.1.20190207224638:
-  version "3.1.20190220143732"
-  resolved "https://registry.npmjs.org/scratch-l10n/-/scratch-l10n-3.1.20190220143732.tgz#302b6950194ac4193c34dda0ed4aa07c71021690"
+scratch-l10n@^3.2.20190417195644:
+  version "3.2.20190501144004"
+  resolved "https://registry.yarnpkg.com/scratch-l10n/-/scratch-l10n-3.2.20190501144004.tgz#67c43f3ccbcac3b6cdccb1a969819c6974176150"
   dependencies:
     "@babel/cli" "^7.1.2"
     "@babel/core" "^7.1.2"
