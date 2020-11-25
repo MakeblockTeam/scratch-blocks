@@ -53,6 +53,16 @@ CLOSURE_ROOT_NPM = os.path.join("node_modules")
 CLOSURE_LIBRARY_NPM = "google-closure-library"
 CLOSURE_COMPILER_NPM = ("google-closure-compiler.cmd" if os.name == "nt" else "google-closure-compiler")
 
+# create new file by path
+def create_file(filePath):
+  file_dir = os.path.split(filePath)[0]
+  if not os.path.isdir(file_dir):
+    os.makedirs(file_dir)
+  if not os.path.exists(os.path.dirname(filePath)):
+    os.makedirs(os.path.dirname(filePath))
+  if not os.path.exists(filePath):
+    os.system(r'touch %s' % filePath)
+
 def import_path(fullpath):
   """Import a file with full path specification.
   Allows one to import from any directory, something __import__ does not do.
@@ -92,10 +102,13 @@ class Gen_uncompressed(threading.Thread):
     self.closure_env = closure_env
 
   def run(self):
+    # modify by huange, 2020-11-25 16:09:09
     if self.vertical:
-      target_filename = 'blockly_uncompressed_vertical.js'
+      target_filename = 'blockly/blockly_uncompressed_vertical.js'
     else:
-      target_filename = 'blockly_uncompressed_horizontal.js'
+      target_filename = 'blockly/blockly_uncompressed_horizontal.js'
+    create_file(target_filename)
+    # modify end
     f = open(target_filename, 'w')
     f.write(HEADER)
     f.write(self.format_js("""
@@ -111,7 +124,7 @@ window.BLOCKLY_DIR = (function() {
   if (!isNodeJS) {
     // Find name of current directory.
     var scripts = document.getElementsByTagName('script');
-    var re = new RegExp('(.+)[\/]blockly_uncompressed(_vertical|_horizontal|)\.js$');
+    var re = new RegExp('(.+)[\/]blockly/blockly_uncompressed(_vertical|_horizontal|)\.js$');
     for (var i = 0, script; script = scripts[i]; i++) {
       var match = re.exec(script.src);
       if (match) {
@@ -232,10 +245,10 @@ class Gen_compressed(threading.Thread):
 
   def gen_core(self, vertical):
     if vertical:
-      target_filename = 'blockly_compressed_vertical.js'
+      target_filename = 'blockly/blockly_compressed_vertical.js'
       search_paths = self.search_paths_vertical
     else:
-      target_filename = 'blockly_compressed_horizontal.js'
+      target_filename = 'blockly/blockly_compressed_horizontal.js'
       search_paths = self.search_paths_horizontal
     # Define the parameters for the POST request.
     params = [
@@ -264,13 +277,13 @@ class Gen_compressed(threading.Thread):
 
   def gen_blocks(self, block_type):
     if block_type == "horizontal":
-      target_filename = "blocks_compressed_horizontal.js"
+      target_filename = "blockly/blocks_compressed_horizontal.js"
       filenames = glob.glob(os.path.join("blocks_horizontal", "*.js"))
     elif block_type == "vertical":
-      target_filename = "blocks_compressed_vertical.js"
+      target_filename = "blockly/blocks_compressed_vertical.js"
       filenames = glob.glob(os.path.join("blocks_vertical", "*.js"))
     elif block_type == "common":
-      target_filename = "blocks_compressed.js"
+      target_filename = "blockly/blocks_compressed.js"
       filenames = glob.glob(os.path.join("blocks_common", "*.js"))
 
     # glob.glob ordering is platform-dependent and not necessary deterministic
@@ -456,6 +469,9 @@ class Gen_compressed(threading.Thread):
       original_b = stats["originalSize"]
       compressed_b = stats["compressedSize"]
       if original_b > 0 and compressed_b > 0:
+        # modify by huange, 2020-11-25 16:36:15
+        create_file(target_filename)
+        # modify end
         f = open(target_filename, "w")
         f.write(code)
         f.close()

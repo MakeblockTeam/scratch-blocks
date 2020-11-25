@@ -24,7 +24,7 @@ module.exports = [{
   },
   performance: {
     hints: false
-  }
+  },
 }, {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
