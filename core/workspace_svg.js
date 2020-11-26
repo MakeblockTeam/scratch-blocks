@@ -2056,7 +2056,11 @@ Blockly.WorkspaceSvg.setTopLevelWorkspaceMetrics_ = function(xyRatio) {
   }
   var x = this.scrollX + metrics.absoluteLeft;
   var y = this.scrollY + metrics.absoluteTop;
-  this.translate(x, y);
+  // if auto close flyout, do not translate blockCanvas.
+  var flyout = this.getFlyout();
+  if (flyout && !flyout.autoClose) {
+    this.translate(x, y);
+  }
   if (this.grid_) {
     this.grid_.moveTo(x, y);
   }
@@ -2265,3 +2269,24 @@ Blockly.WorkspaceSvg.prototype.getGrid = function() {
 // Export symbols that would otherwise be renamed by Closure compiler.
 Blockly.WorkspaceSvg.prototype['setVisible'] =
     Blockly.WorkspaceSvg.prototype.setVisible;
+
+/**
+ * toggle flyout visible
+ */
+Blockly.WorkspaceSvg.prototype.toggleFlyoutVisible = function() {
+  var flyout = this.getFlyout();
+  if (flyout) {
+    flyout.setVisible(!flyout.isVisible());
+  }
+};
+
+Blockly.WorkspaceSvg.prototype.toggleFlyoutAutoClose = function() {
+  var flyout = this.getFlyout();
+  if (flyout) {
+    flyout.setAutoClose(!flyout.autoClose);
+  }
+  if (this.scrollbar) {
+    this.scrollbar.resize();
+  }
+  this.updateScreenCalculations_();
+};

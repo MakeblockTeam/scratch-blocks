@@ -411,6 +411,25 @@ Blockly.Flyout.prototype.setVisible = function(visible) {
 };
 
 /**
+ * Set whether the flyout is autoClose.
+ * @param {boolean} isAutoClose True if autoClose.
+ */
+Blockly.Flyout.prototype.setAutoClose = function(isAutoClose) {
+  if (isAutoClose !== this.autoClose) {
+    var toolbox = this.parentToolbox_;
+    if (toolbox.HtmlDiv) {
+      var toolboxRect = toolbox.HtmlDiv.getBoundingClientRect();
+      if (isAutoClose) {
+        toolbox.width = toolboxRect.width;
+      } else {
+        toolbox.width = toolboxRect.width + this.getWidth();
+      }
+    }
+    this.autoClose = isAutoClose;
+  }
+};
+
+/**
  * Set whether this flyout's container is visible.
  * @param {boolean} visible Whether the container is visible.
  */
@@ -429,15 +448,35 @@ Blockly.Flyout.prototype.setContainerVisible = function(visible) {
  */
 Blockly.Flyout.prototype.updateDisplay_ = function() {
   var show = true;
+  var svg = this.svgGroup_;
   if (!this.containerVisible_) {
     show = false;
   } else {
     show = this.isVisible();
   }
-  this.svgGroup_.style.display = show ? 'block' : 'none';
+  // modify by huange. 2020-11-25 22:03:11
+  svg.style.transition = 'transform .25s ease-in-out';
+  svg.style.display = 'block';
+  var transform = 'translate(' + this.positionX + 'px,' + this.positionY + 'px)';
+  var w = this.getWidth();
+  if (!show) {
+    transform = 'translate(' + (this.positionX - w) + 'px,' + this.positionY + 'px)';
+  }
+  Blockly.utils.setCssTransform(svg, transform);
+  var scrollbar = this.scrollbar_;
+  if (show) {
+    svg.addEventListener('transitionend', function() {
+      console.log('transitionend');
+      scrollbar.setContainerVisible(true);
+    }, { once: true });
+  } else {
+    // svg.style.display = 'none';
+    scrollbar.setContainerVisible(false);
+  }
+  // modify end
   // Update the scrollbar's visiblity too since it should mimic the
   // flyout's visibility.
-  this.scrollbar_.setContainerVisible(show);
+  // this.scrollbar_.setContainerVisible(show);
 };
 
 /**

@@ -308,6 +308,10 @@ Blockly.VerticalFlyout.prototype.setMetrics_ = function(xyRatio) {
   }
 };
 
+
+Blockly.VerticalFlyout.prototype.positionX = 0;
+Blockly.VerticalFlyout.prototype.positionY = 0;
+
 /**
  * Move the flyout to the edge of the workspace.
  */
@@ -345,6 +349,8 @@ Blockly.VerticalFlyout.prototype.position = function() {
   this.svgGroup_.setAttribute("width", this.width_);
   this.svgGroup_.setAttribute("height", this.height_);
   var transform = 'translate(' + x + 'px,' + y + 'px)';
+  this.positionX = x;
+  this.positionY = y;
   Blockly.utils.setCssTransform(this.svgGroup_, transform);
 
   // Update the scrollbar (if one exists).
