@@ -7,14 +7,15 @@
   "homepage": "https://github.com/LLK/scratch-blocks#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LLK/scratch-blocks.git"
+    "url": "https://github.com/LLK/scratch-blocks.git",
+    "sha": "a1c33e51ea9eee534f268c6c4671affcdbe6face"
   },
   "main": "./dist/vertical.js",
   "browser": "./shim/blocks_compressed_vertical.js",
   "scripts": {
     "deploy": "rimraf gh-pages/closure-library/scripts/ci/CloseAdobeDialog.exe && gh-pages -t -d gh-pages -m \"Build for $(git log --pretty=format:%H -n1)\"",
-    "prepublish": "python build.py",
-    "build": "webpack",
+    "prepublish": "python build.py && webpack",
+    "build": "python build.py && webpack",
     "test:unit": "node tests/jsunit/test_runner.js",
     "test:lint": "eslint .",
     "test:messages": "npm run translate && node i18n/test_scratch_msgs.js",

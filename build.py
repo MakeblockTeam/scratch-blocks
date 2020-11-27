@@ -54,14 +54,16 @@ CLOSURE_LIBRARY_NPM = "google-closure-library"
 CLOSURE_COMPILER_NPM = ("google-closure-compiler.cmd" if os.name == "nt" else "google-closure-compiler")
 
 # create new file by path
-def create_file(filePath):
-  file_dir = os.path.split(filePath)[0]
+def create_file(file_path):
+  file_dir = os.path.split(file_path)[0]
+  if not file_dir:
+    return
   if not os.path.isdir(file_dir):
     os.makedirs(file_dir)
-  if not os.path.exists(os.path.dirname(filePath)):
-    os.makedirs(os.path.dirname(filePath))
-  if not os.path.exists(filePath):
-    os.system(r'touch %s' % filePath)
+  if not os.path.exists(os.path.dirname(file_path)):
+    os.makedirs(os.path.dirname(file_path))
+  if not os.path.exists(file_path):
+    os.system(r'touch %s' % file_path)
 
 def import_path(fullpath):
   """Import a file with full path specification.
@@ -104,9 +106,9 @@ class Gen_uncompressed(threading.Thread):
   def run(self):
     # modify by huange, 2020-11-25 16:09:09
     if self.vertical:
-      target_filename = 'blockly/blockly_uncompressed_vertical.js'
+      target_filename = 'blockly_vertical.js'
     else:
-      target_filename = 'blockly/blockly_uncompressed_horizontal.js'
+      target_filename = 'blockly_horizontal.js'
     create_file(target_filename)
     # modify end
     f = open(target_filename, 'w')
@@ -245,10 +247,10 @@ class Gen_compressed(threading.Thread):
 
   def gen_core(self, vertical):
     if vertical:
-      target_filename = 'blockly/blockly_compressed_vertical.js'
+      target_filename = 'blockly/blockly_vertical.js'
       search_paths = self.search_paths_vertical
     else:
-      target_filename = 'blockly/blockly_compressed_horizontal.js'
+      target_filename = 'blockly/blockly_horizontal.js'
       search_paths = self.search_paths_horizontal
     # Define the parameters for the POST request.
     params = [
@@ -277,13 +279,13 @@ class Gen_compressed(threading.Thread):
 
   def gen_blocks(self, block_type):
     if block_type == "horizontal":
-      target_filename = "blockly/blocks_compressed_horizontal.js"
+      target_filename = "blockly/blocks/horizontal.js"
       filenames = glob.glob(os.path.join("blocks_horizontal", "*.js"))
     elif block_type == "vertical":
-      target_filename = "blockly/blocks_compressed_vertical.js"
+      target_filename = "blockly/blocks/vertical.js"
       filenames = glob.glob(os.path.join("blocks_vertical", "*.js"))
     elif block_type == "common":
-      target_filename = "blockly/blocks_compressed.js"
+      target_filename = "blockly/blocks/common.js"
       filenames = glob.glob(os.path.join("blocks_common", "*.js"))
 
     # glob.glob ordering is platform-dependent and not necessary deterministic

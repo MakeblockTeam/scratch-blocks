@@ -1,0 +1,23 @@
+{
+  "name": "@mblock/scratch-blocks",
+  "version": "0.1.0",
+  "description": "mblock scratch-blocks, frok to LLK scrach-blocks.",
+  "main": "./dist/vertical.js",
+  "module": "./dist/vertical.js",
+  "browser": "./dist/vertical.js",
+  "files": [
+    "dist/*",
+    "media/*",
+    "blockly/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mblock team",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/makeblock/scratch-blocks#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/makeblock/scratch-blocks.git"
+  }
+}
