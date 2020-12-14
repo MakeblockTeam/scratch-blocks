@@ -126,7 +126,7 @@ window.BLOCKLY_DIR = (function() {
   if (!isNodeJS) {
     // Find name of current directory.
     var scripts = document.getElementsByTagName('script');
-    var re = new RegExp('(.+)[\/]blockly/blockly_uncompressed(_vertical|_horizontal|)\.js$');
+    var re = new RegExp('(.+)[\/]blockly/blockly(_vertical|_horizontal|)\.js$');
     for (var i = 0, script; script = scripts[i]; i++) {
       var match = re.exec(script.src);
       if (match) {
@@ -244,6 +244,8 @@ class Gen_compressed(threading.Thread):
     self.gen_blocks("horizontal")
     self.gen_blocks("vertical")
     self.gen_blocks("common")
+    self.gen_blocks("message")
+    self.gen_blocks("scratch-message")
 
   def gen_core(self, vertical):
     if vertical:
@@ -287,6 +289,12 @@ class Gen_compressed(threading.Thread):
     elif block_type == "common":
       target_filename = "blockly/blocks/common.js"
       filenames = glob.glob(os.path.join("blocks_common", "*.js"))
+    elif block_type == "message":
+      target_filename = "blockly/msg/messages.js"
+      filenames = glob.glob(os.path.join("msg", "messages.js"))
+    elif block_type == "scratch-message":
+      target_filename = "blockly/msg/scratch_msgs.js"
+      filenames = glob.glob(os.path.join("msg", "scratch_msgs.js"))
 
     # glob.glob ordering is platform-dependent and not necessary deterministic
     filenames.sort()  # Deterministic build.
@@ -294,6 +302,12 @@ class Gen_compressed(threading.Thread):
     # Define the parameters for the POST request.
     params = [
       ("compilation_level", "SIMPLE"),
+      ("output_wrapper", """
+function setup(Blockly, goog) {
+  %output%
+};
+module.exports = setup;
+""")
     ]
 
     # Read in all the source files.

@@ -2,6 +2,8 @@
 
 'use strict';
 
+goog.provide('Blockly.ScratchMsgs');
+goog.provide('Blockly.ScratchMsgs.locales');
 goog.provide('Blockly.ScratchMsgs.allLocales');
 
 goog.require('Blockly.ScratchMsgs');

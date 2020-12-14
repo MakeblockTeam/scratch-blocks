@@ -11,8 +11,8 @@ module.exports = [
   {
     mode: process.env.NODE_ENV === "production" ? "production" : "development",
     entry: {
-      horizontal: "./shim/horizontal.js",
-      vertical: "./shim/vertical.js",
+      // horizontal: "./shim/horizontal.js",
+      vertical: "./shim/vertical",
     },
     output: {
       library: "ScratchBlocks",
@@ -31,8 +31,8 @@ module.exports = [
   {
     mode: process.env.NODE_ENV === "production" ? "production" : "development",
     entry: {
-      horizontal: "./shim/horizontal.js",
-      vertical: "./shim/vertical.js",
+      // horizontal: "./shim/horizontal.js",
+      vertical: "./shim/vertical",
     },
     output: {
       library: "Blockly",
